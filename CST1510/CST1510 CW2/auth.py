@@ -1,16 +1,6 @@
 import bcrypt
 import os
-'''
-A functional 
-command-line 
-script (auth.py) that 
-allows secure 
-registration and 
-login, with user 
-data stored in a 
-local file (users.txt).
 
-'''
 
 def hash_password(userPasswordString):
     #encode the user input, generate a salt, hash the password and decode it to store in file
