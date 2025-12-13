@@ -1,6 +1,7 @@
 import bcrypt
 import os
 
+filePath = r"C:\Users\samue\PycharmProjects\PythonProject\CST1510\CST1510 CW2\DATA\users.txt"
 
 def hash_password(userPasswordString):
     #encode the user input, generate a salt, hash the password and decode it to store in file
@@ -18,16 +19,16 @@ def check_password(userPasswordString, storedPassword):
 
 def check_existing_user(username):
     try :   #try catch if the file is not present in the system
-        with open('users.txt', 'r') as filehandle:
+        with open(filePath, 'r') as filehandle:
             checkExisting = False   #flag to check for presence
             for line in filehandle:     #loop for every line in file
-                lineList = line.split('\t')     #split text to separate username and password
+                lineList = line.split(',')     #split text to separate username and password
                 if lineList[0] == username:
                     checkExisting = True
             return checkExisting
     except FileNotFoundError :
         print("There are no users registered")
-        with open('users.txt', 'w') as filehandle:
+        with open(filePath, 'w') as filehandle:
             filehandle.write('')
         return False
 
@@ -47,11 +48,13 @@ if userChoice.lower() == 'new':
         checkExisting = check_existing_user(username)
 
 #enter the username and password into the text file
-    with open('users.txt', 'a') as filehandle:
+    with open(filePath, 'a') as filehandle:
         userPassword = input('Enter your password: ')
         hashedPassword = hash_password(userPassword)
-        filehandle.write(username + '\t')
-        filehandle.write(hashedPassword + '\n')
+        userRole = input("Enter your role: ")
+        filehandle.write(username + ',')
+        filehandle.write(hashedPassword + ',')
+        filehandle.write(userRole + '\n')
         print("New account created!")
 
 elif userChoice.lower() == 'log in':
@@ -61,9 +64,9 @@ elif userChoice.lower() == 'log in':
 #check if username is present into text file
     checkExisting = False
     try:
-       with open('users.txt', 'r') as filehandle:
+       with open(filePath, 'r') as filehandle:
             for line in filehandle:
-                lineList = line.split('\t')
+                lineList = line.split(',')
                 if lineList[0] == username:
                     checkExisting = True
                     storedPassword = lineList[1]    #assign stored password from file
